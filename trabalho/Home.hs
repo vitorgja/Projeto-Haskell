@@ -14,3 +14,12 @@ getHomeR = defaultLayout $ do
         <p>
             <a href=@{AddR 5 7}?_accept=application/json>JSON addition
     |]
+
+
+
+
+footerzinho :: Widget
+footerzinho = [whamlet|
+                  <footer>
+                      VAI "CORINTHIANS"
+              |]

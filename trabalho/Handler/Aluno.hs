@@ -42,14 +42,20 @@ postAlunoR = do
 getListAluR :: Handler Html
 getListAluR = do
             alunos <- runDB $ selectList [] [Asc AlunoNome]
-            defaultLayout $ do
-                (whamletFile "templates/header.hamlet")
-                (whamletFile "templates/table.hamlet")
+            defaultLayout $(whamletFile "templates/table.hamlet")
                 
 postDelAlunoR :: AlunoId -> Handler Html
 postDelAlunoR alid = do 
                 runDB $ delete alid
                 redirect ListAluR
+                
+headerzinho :: Widget
+headerzinho = [whamlet|
+                <header>
+                    <div class="container">
+                        <h1>Trabalho de Haskell
+              |]
+
 
 footerzinho :: Widget
 footerzinho = [whamlet|
