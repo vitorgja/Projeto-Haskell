@@ -1,5 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE QuasiQuotes       #-}
+{-# LANGUAGE TemplateHaskell   #-}
 module Handler.Aluno where
 
 import Foundation
@@ -42,25 +43,16 @@ getListAluR :: Handler Html
 getListAluR = do
             alunos <- runDB $ selectList [] [Asc AlunoNome]
             defaultLayout $ do
-                [whamlet|
-                    <table>
-                        <tr> 
-                            <td> id  
-                            <td> nome 
-                            <td> rg 
-                            <td> idade 
-                            <td>
-                        $forall Entity alid aluno <- alunos
-                            <tr>
-                                <form action=@{DelAlunoR alid} method=post> 
-                                    <td> #{fromSqlKey  alid}  
-                                    <td> #{alunoNome  aluno} 
-                                    <td> #{alunoRg    aluno} 
-                                    <td> #{alunoIdade aluno}
-                                    <td> <input type="submit" value="Excluir">
-                |]
+                (whamletFile "templates/header.hamlet")
+                (whamletFile "templates/table.hamlet")
                 
 postDelAlunoR :: AlunoId -> Handler Html
 postDelAlunoR alid = do 
                 runDB $ delete alid
                 redirect ListAluR
+
+footerzinho :: Widget
+footerzinho = [whamlet|
+                  <footer>
+                      VAI "CORINTHIANS"
+              |]
