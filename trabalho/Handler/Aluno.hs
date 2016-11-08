@@ -9,6 +9,8 @@ import Data.Text
 import Control.Applicative
 import Database.Persist.Postgresql
 
+import Handler.Widgets
+
 -- /aluno/cadastro       AlunoR    GET POST
 -- /aluno/listagem       ListAluR  GET
 
@@ -49,16 +51,3 @@ postDelAlunoR alid = do
                 runDB $ delete alid
                 redirect ListAluR
                 
-headerzinho :: Widget
-headerzinho = [whamlet|
-                <header>
-                    <div class="container">
-                        <h1>Trabalho de Haskell
-              |]
-
-
-footerzinho :: Widget
-footerzinho = [whamlet|
-                  <footer>
-                      VAI "CORINTHIANS"
-              |]

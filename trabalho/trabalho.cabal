@@ -11,6 +11,8 @@ executable          trabalho
                     Handler.Aluno
                     Handler.Disciplina
                     Handler.Usuario
+                    Handler.Widgets
+                    
 
   ghc-options:      -Wall -fwarn-tabs -O2
 
