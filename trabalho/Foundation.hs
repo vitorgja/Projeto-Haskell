@@ -1,13 +1,45 @@
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE TemplateHaskell   #-}
-{-# LANGUAGE TypeFamilies      #-}
-{-# LANGUAGE ViewPatterns      #-}
+{-# LANGUAGE OverloadedStrings, TypeFamilies, QuasiQuotes,
+             TemplateHaskell, GADTs, FlexibleContexts,
+             MultiParamTypeClasses, DeriveDataTypeable, EmptyDataDecls,
+             GeneralizedNewtypeDeriving, ViewPatterns, FlexibleInstances #-}
 module Foundation where
 
-import Yesod.Core
+import Yesod
+import Data.Text
+import Database.Persist.Postgresql
+    ( ConnectionPool, SqlBackend, runSqlPool)
 
-data App = App
+data App = App {connPool :: ConnectionPool }
+
+share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
+Usuario
+    email Text
+    senha Text
+
+Aluno
+    nome  Text
+    rg    Text
+    idade Int
+    deriving Show
+
+Disciplina
+    nome  Text
+    sigla Text
+    deriving Show
+|]
 
 mkYesodData "App" $(parseRoutesFile "routes")
 
+type Form a = Html -> MForm Handler (FormResult a, Widget)
+
 instance Yesod App
+
+instance YesodPersist App where
+   type YesodPersistBackend App = SqlBackend
+   runDB f = do
+       master <- getYesod
+       let pool = connPool master
+       runSqlPool f pool
+
+instance RenderMessage App FormMessage where
+    renderMessage _ _ = defaultFormMessage

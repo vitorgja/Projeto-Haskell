@@ -1,2 +1,9 @@
-/              HomeR GET
-/add/#Int/#Int AddR  GET
+/                          HomeR     GET
+/aluno/cadastro            AlunoR    GET POST
+/aluno/listagem            ListAluR  GET
+/disciplina/cadastro       DiscR     GET POST
+/aluno/apagar/#AlunoId     DelAlunoR POST
+/disciplina/listagem       ListDiscR GET
+/usuario/cadastro          UsuarioR  GET POST
+/usuario/login             LoginR    GET POST
+/perfil                    PerfilR   GET

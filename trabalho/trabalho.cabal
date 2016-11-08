@@ -8,13 +8,18 @@ executable          trabalho
   main-is:          Main.hs
   other-modules:    Application
                     Foundation
-
-                    Add
-                    Home
+                    Handler.Aluno
+                    Handler.Disciplina
+                    Handler.Usuario
 
   ghc-options:      -Wall -fwarn-tabs -O2
 
   build-depends:  base
+                , yesod
                 , yesod-core
+                , text                          
+                , persistent                    
+                , persistent-postgresql
+                , monad-logger
 
   ghc-options:    -threaded -O2 -rtsopts -with-rtsopts=-N
