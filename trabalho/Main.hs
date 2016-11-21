@@ -7,7 +7,7 @@ import Control.Monad.Logger (runStdoutLoggingT)
 import Database.Persist.Postgresql
 
 connStr :: ConnectionString
-connStr = "dbname=dfbq7cgr4p1co host=ec2-23-23-208-32.compute-1.amazonaws.com user=xrusiwinjgaqhu password=uXJ8YZWDr27PxuI7DqBodGku36 port=5432"
+connStr = "dbname=demhjf4a4dd7r host=ec2-54-243-200-110.compute-1.amazonaws.com user=oyakdoepmbyagw password=fVZUDBKb-pLXS0YReLz-gyQHJS port=5432"
 
 main::IO()
 main = runStdoutLoggingT $ withPostgresqlPool connStr 10 $ \pool -> liftIO $ do 

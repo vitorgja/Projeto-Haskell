@@ -10,7 +10,8 @@ import Data.Text
 
 formUser :: Form Usuario
 formUser = renderDivs $ Usuario
-    <$> areq emailField    "E-mail"  Nothing
+    <$> areq textField     "Nome"    Nothing 
+    <*> areq emailField    "E-mail"  Nothing
     <*> areq passwordField "Senha"   Nothing
 
 getLoginR :: Handler Html

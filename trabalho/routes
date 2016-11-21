@@ -1,10 +1,14 @@
-/                      HomeR     GET
-/aluno/cadastro        AlunoR    GET POST
-/aluno/listagem        ListAluR  GET
-/aluno/apagar/#AlunoId DelAlunoR POST
-/disciplina/cadastro   DiscR     GET POST
-/disciplina/listagem   ListDiscR GET
-/usuario/cadastro      UsuarioR  GET POST
-/usuario/login         LoginR    GET POST
-/logout                LogoutR   POST
-/perfil                PerfilR   GET
+/                       HomeR     GET
+/aluno/cadastro         AlunoR    GET POST
+/aluno/listagem         ListAluR  GET
+/aluno/apagar/#AlunoId  DelAlunoR POST
+/disciplina/cadastro    DiscR     GET POST
+/disciplina/listagem    ListDiscR GET
+/usuario/cadastro       UsuarioR  GET POST
+/usuario/login          LoginR    GET POST
+/logout                 LogoutR   POST
+/perfil                 PerfilR   GET
+
+/contato                ContatoR  GET POST
+/contato/lista          ContatoListaR GET
+/contato/del/#ContatoId DelContatoR POST

@@ -13,8 +13,24 @@ data App = App {connPool :: ConnectionPool }
 
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
 Usuario
+    nome  Text
     email Text
     senha Text
+    
+Categoria
+    nome  Text
+    
+Post 
+    titulo Text
+    descricao Text
+    usuario UsuarioId
+    categoria CategoriaId
+    
+Contato
+    nome Text
+    email Text
+    assunto Text
+    descricao Text
 
 Aluno
     nome  Text

@@ -4,7 +4,7 @@ module Handler.Disciplina where
 
 import Foundation
 import Yesod
-import Data.Text
+-- import Data.Text
 import Control.Applicative
 import Database.Persist.Postgresql
 

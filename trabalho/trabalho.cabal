@@ -11,6 +11,7 @@ executable          trabalho
                     Handler.Aluno
                     Handler.Disciplina
                     Handler.Usuario
+                    Handler.Contato
                     Handler.Widgets
                     
 

@@ -9,6 +9,7 @@ import Yesod
 import Handler.Usuario
 import Handler.Disciplina
 import Handler.Aluno
+import Handler.Contato
 ------------------
 mkYesodDispatch "App" resourcesApp
 
