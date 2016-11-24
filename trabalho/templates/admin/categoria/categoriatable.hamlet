@@ -8,8 +8,8 @@
     $forall Entity alid categoria <- categorias
         <tr>
             <form action=@{DelCategoriaR alid} method=post> 
-                <td> #{fromSqlKey  alid}  
-                <td> #{categoriaNome    categoria} 
-                <td> <input type="submit">
+                <td> #{fromSqlKey  alid} </td>  
+                <td> #{categoriaNome categoria} </td> 
+                <td> <input type="submit"> </td>
 
 ^{footerzinho}

@@ -53,9 +53,9 @@ getCategoriaR = do
     (widget,enctype)<- generateFormPost formCategoria
     defaultLayout $ do
         [whamlet|
-        <form action=@{CategoriaR} method=post enctype=#{enctype}>
-        ^{widget}
-        <input type="submit" value="Logar">
+            <form action=@{CategoriaR} method=post enctype=#{enctype}>
+                ^{widget}
+                <input type="submit" value="Logar">
         |]
         
 postCategoriaR :: Handler Html
@@ -102,9 +102,9 @@ getPostR = do
             (widget,enctype)<- generateFormPost formPost
             defaultLayout $ do
                 [whamlet|
-                <form action=@{PostR} method=post enctype=#{enctype}>
-                ^{widget}
-                <input type="submit" value="Logar">
+                    <form action=@{PostR} method=post enctype=#{enctype}>
+                        ^{widget}
+                        <input type="submit" value="Logar">
                 |]
                 
 postPostR :: Handler Html

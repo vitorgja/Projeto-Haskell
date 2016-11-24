@@ -1,21 +1,21 @@
-/                             HomeR           GET
+/                                 HomeR            GET
 
-/admin/home                   HomeAdminR      GET 
-/admin/cadastro               UsuarioR        GET POST
-/admin/login                  LoginR          GET POST
-/admin/logout                 LogoutR             POST
-/admin/perfil                 PerfilR         GET
+/admin/home                       HomeAdminR      GET 
+/admin/cadastro                   UsuarioR        GET POST
+/admin/login                      LoginR          GET POST
+/admin/logout                     LogoutR             POST
+/admin/perfil                     PerfilR         GET
 
 /admin/categoria                  CategoriaR      GET POST
 /admin/categoria/lista            CategoriaListaR GET
 /admin/categoria/del/#CategoriaId DelCategoriaR       POST
 
-/admin/post                   PostR           GET POST
-/admin/post/lista             PostListaR      GET
-/admin/post/del/#PostId       DelPostR            POST
+/admin/post                       PostR           GET POST
+/admin/post/lista                 PostListaR      GET
+/admin/post/del/#PostId           DelPostR            POST
 
-/contato                      ContatoR        GET POST
-/admin/contato/lista          ContatoListaR   GET
-/admin/contato/del/#ContatoId DelContatoR         POST
+/contato                          ContatoR        GET POST
+/admin/contato/lista              ContatoListaR   GET
+/admin/contato/del/#ContatoId     DelContatoR         POST
 
 
