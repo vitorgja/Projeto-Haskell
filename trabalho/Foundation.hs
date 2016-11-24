@@ -16,32 +16,23 @@ Usuario
     nome  Text
     email Text
     senha Text
-    
+    deriving Show
 Categoria
     nome  Text
-    
+    deriving Show
 Post 
     titulo Text
     descricao Text
     usuario UsuarioId
     categoria CategoriaId
-    
+   deriving Show 
 Contato
     nome Text
     email Text
     assunto Text
     descricao Text
-
-Aluno
-    nome  Text
-    rg    Text
-    idade Int
     deriving Show
 
-Disciplina
-    nome  Text
-    sigla Text
-    deriving Show
 |]
 
 mkYesodData "App" $(parseRoutesFile "routes")

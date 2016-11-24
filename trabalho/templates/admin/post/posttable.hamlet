@@ -1,0 +1,19 @@
+^{headerzinho}
+<table>
+    <tr> 
+        <td> id  
+        <td> titulo 
+        <td> descricao 
+        <td> usuario 
+        <td> categoria
+        
+    $forall Entity alid post <- posts
+        <tr>
+            <form action=@{DelPostR alid} method=post> 
+                <td> #{fromSqlKey  alid}  
+                <td> #{postTitulo    post} 
+                <td> #{postDescricao post} 
+                
+                <td> <input type="submit">
+
+^{footerzinho}

@@ -1,0 +1,15 @@
+^{headerzinho}
+<table>
+    <tr> 
+        <td> id  
+        <td> Nome 
+       
+        
+    $forall Entity alid categoria <- categorias
+        <tr>
+            <form action=@{DelCategoriaR alid} method=post> 
+                <td> #{fromSqlKey  alid}  
+                <td> #{categoriaNome    categoria} 
+                <td> <input type="submit">
+
+^{footerzinho}

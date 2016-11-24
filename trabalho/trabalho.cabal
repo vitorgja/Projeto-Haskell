@@ -8,10 +8,8 @@ executable          trabalho
   main-is:          Main.hs
   other-modules:    Application
                     Foundation
-                    Handler.Aluno
-                    Handler.Disciplina
-                    Handler.Usuario
-                    Handler.Contato
+                    Handler.Home
+                    Handler.Admin
                     Handler.Widgets
                     
 
