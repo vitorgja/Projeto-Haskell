@@ -37,9 +37,9 @@ Contato
 
 mkYesodData "App" $(parseRoutesFile "routes")
 
-type Form a = Html -> MForm Handler (FormResult a, Widget)
+type Form x = Html -> MForm Handler (FormResult x, Widget)
 
---instance Yesod App
+
 
 instance YesodPersist App where
    type YesodPersistBackend App = SqlBackend
@@ -47,22 +47,21 @@ instance YesodPersist App where
        master <- getYesod
        let pool = connPool master
        runSqlPool f pool
+
+
+
+instance Yesod App
+
+
        
-instance Yesod App where
-    authRoute _ = Just LoginR
-    
-    isAuthorized LoginR _ = return Authorized
-    isAuthorized UsuarioR  _ = return Authorized
-    isAuthorized HomeR _ = return Authorized
-    isAuthorized ContatoR _ = return Authorized
-    isAuthorized _ _ = estaAutenticado
-
-estaAutenticado :: Handler AuthResult
-estaAutenticado = do
-   msu <- lookupSession "_ID"
-   case msu of
-       Just _ -> return Authorized
-       Nothing -> return AuthenticationRequired
-
+       
+       
 instance RenderMessage App FormMessage where
     renderMessage _ _ = defaultFormMessage
+       
+       
+       
+       
+       
+       
+

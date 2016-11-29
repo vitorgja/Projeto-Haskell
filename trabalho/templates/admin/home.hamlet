@@ -1,0 +1,11 @@
+<h1> Meu primeiro site em Haskell!
+<ul>
+    <li> <a href=@{CategoriaR}>Cadastro de Categoria
+    <li> <a href=@{CategoriaListaR}>Listagem de Categoria
+    <li> <a href=@{PostR}>Cadastro de Post
+    <li> <a href=@{PostListaR}>Listagem de Post
+    <li> <a href=@{ContatoR}>Contato
+    <li> 
+        <form action=@{LogoutR} method=post>
+            <input type="submit" value="Logout">
+    

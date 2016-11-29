@@ -12,7 +12,11 @@ import Database.Persist.Postgresql
 import Handler.Widgets
 
 -- Blog ----------------------------------------------------------------------------------------------------------------
-
+-- animal <- runDB $ get404 alid 
+-- especies <- runDB $ get404 (animalEspecieid animal)
+--userNome :: UsuarioId -> Usuario
+--userNome userId= runDB $ get404 userId                        
+                        
 getHomeR :: Handler Html
 getHomeR = do
     sess <- lookupSession "_ID"
@@ -38,10 +42,12 @@ getHomeR = do
                     <td> descricao 
                     <td> usuario 
                 $forall Entity alid post <- posts
+                    --animal <- runDB $ get404 alid 
+                    --usuario <- runDB $ get404 (postUsuarioId post)
                     <tr>
                         <td> #{fromSqlKey  alid}  
                         <td> #{postTitulo     post} 
-                        <td> #{postDescricao     post} 
+                        <td> #{postDescricao     post}
 
                         
         |]
@@ -53,7 +59,7 @@ formContato = renderDivs $ Contato
     <$> areq textField  "Nome"      Nothing 
     <*> areq emailField "E-mail"    Nothing
     <*> areq textField  "Assunto"   Nothing
-    <*> areq textField  "Descricao" Nothing
+    <*> areq textareaField  "Descricao" Nothing
     
     
 getContatoR :: Handler Html

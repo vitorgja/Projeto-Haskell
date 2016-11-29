@@ -21,24 +21,30 @@ headerzinho = [whamlet|
 footerzinho :: Widget
 footerzinho = [whamlet|
                   <footer>
-                      Orgulhosamente desenvolvido em <strong>Haskell</strong>, por Henrique Fernandez, Rosilene Silva e Vitor Pereira.
+                      <div>
+                        <p>
+                            Orgulhosamente desenvolvido em <strong>Haskell</strong>, 
+                            por Henrique Fernandez e Vitor Pereira.
               |]
               
   
-{-            
+{--         
 -- Menu
-menuzinho :: Widget
-menuzinho = [whamlet|
-                <ul>
-                    <li> <a href=@{AlunoR}>Cadastro de aluno
-                    <li> <a href=@{ListAluR}>Listagem de aluno
-                    <li> <a href=@{DiscR}>Cadastro de disciplina
-                    <li> <a href=@{ListDiscR}>Listagem de disciplina
-                    $maybe _ <- sess
-                        <li> 
-                            <form action=@{LogoutR} method=post>
-                                <input type="submit" value="Logout">
-                    $nothing
-                        <li> <a href=@{LoginR}>Login
-            |]
--}
+menuzinho :: (a) -> Widget
+menuzinho (sess) = do
+        toWidget[whamlet|
+            <h1> Meu primeiro site em Haskell!
+            <ul>
+                <li> <a href=@{CategoriaR}>Cadastro de Categoria
+                <li> <a href=@{CategoriaListaR}>Listagem de Categoria
+                <li> <a href=@{PostR}>Cadastro de Post
+                <li> <a href=@{PostListaR}>Listagem de Post
+                <li> <a href=@{ContatoR}>Contato
+                $maybe _ <- sess
+                    <li> 
+                        <form action=@{LogoutR} method=post>
+                            <input type="submit" value="Logout">
+                $nothing
+                    <li> <a href=@{LoginR}>Login
+        |]
+--}

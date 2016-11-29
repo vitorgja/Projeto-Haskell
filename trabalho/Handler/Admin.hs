@@ -16,6 +16,7 @@ import Handler.Widgets
 getHomeAdminR :: Handler Html
 getHomeAdminR = do
     sess <- lookupSession "_ID"
+    
     defaultLayout $ do
         toWidget [lucius|
             ul li {
@@ -23,9 +24,11 @@ getHomeAdminR = do
             }
             a {
                 color: blue;
+                padding: 10px 20px
+                background: #c5c4c5;
             }
         |]
-        [whamlet|
+        toWidget [whamlet|
             <h1> Meu primeiro site em Haskell!
             <ul>
                 <li> <a href=@{CategoriaR}>Cadastro de Categoria
@@ -39,7 +42,12 @@ getHomeAdminR = do
                             <input type="submit" value="Logout">
                 $nothing
                     <li> <a href=@{LoginR}>Login
+                    
+            
         |]
+       
+       
+        
 
 -- Categoria -----------------------------------------------------------------------------------------------------------
 
@@ -85,7 +93,7 @@ postDelCategoriaR alid = do
 formPost :: Form Post
 formPost = renderDivs $ Post <$>
     areq textField "Nome" Nothing <*>
-    areq textField "Idade" Nothing <*>
+    areq textareaField "Idade" Nothing <*>
     areq (selectField usuarios) "Usuarios" Nothing <*>
     areq (selectField dptos) "Categoria" Nothing
 
@@ -131,6 +139,11 @@ getPostListaR = do
     
 
 -- Usuarios -----------------------------------------------------------------------------------------------------------
+formUserLogin :: Form Usuario
+formUserLogin = renderDivs $ Usuario
+    <$> areq textField     "Nome"    Nothing 
+    <*> areq emailField    "E-mail"  Nothing
+    <*> areq passwordField "Senha"   Nothing
 
 formUser :: Form Usuario
 formUser = renderDivs $ Usuario
@@ -140,22 +153,36 @@ formUser = renderDivs $ Usuario
 
 getLoginR :: Handler Html
 getLoginR = do
-    (widget,enctype)<- generateFormPost formUser
+    (widget,enctype)<- generateFormPost formUserLogin
     defaultLayout $ do
         [whamlet|
-        <form action=@{LoginR} method=post enctype=#{enctype}>
-        ^{widget}
-        <input type="submit" value="Logar">
+            <form action=@{LoginR} method=post enctype=#{enctype}>
+                ^{widget}
+                <input type="submit" value="Logar">
         |]
+-- Rota de autenticação
+postLoginR :: Handler Html
+postLoginR = do
+    ((resultado,_),_)<- runFormPost formUserLogin
+    case resultado of
+        FormSuccess user -> do
+            usuario <- runDB $ selectFirst [UsuarioEmail ==. (usuarioEmail user),
+                UsuarioSenha ==. (usuarioSenha user)] []
+            case usuario of
+                    Nothing -> redirect LoginR
+                    Just (Entity uid _) -> do
+                        setSession "_ID" (pack $ show uid)
+                        redirect PerfilR
+        _ -> redirect HomeR
 
 getUsuarioR :: Handler Html
 getUsuarioR = do
             (widget,enctype)<- generateFormPost formUser
             defaultLayout $ do
                 [whamlet|
-                <form action=@{UsuarioR} method=post enctype=#{enctype}>
-                ^{widget}
-                <input type="submit" value="Cadastrar">
+                    <form action=@{UsuarioR} method=post enctype=#{enctype}>
+                        ^{widget}
+                        <input type="submit" value="Cadastrar">
                 |]
 
 postUsuarioR :: Handler Html
@@ -169,20 +196,7 @@ postUsuarioR = do
                             |]
                         _ -> redirect HomeR
 
--- Rota de autenticação
-postLoginR :: Handler Html
-postLoginR = do
-    ((resultado,_),_)<- runFormPost formUser
-    case resultado of
-        FormSuccess user -> do
-            usuario <- runDB $ selectFirst [UsuarioEmail ==. (usuarioEmail user),
-                UsuarioSenha ==. (usuarioSenha user)] []
-            case usuario of
-                    Nothing -> redirect LoginR
-                    Just (Entity uid _) -> do
-                        setSession "_ID" (pack $ show uid)
-                        redirect PerfilR
-        _ -> redirect HomeR
+
                     
 getPerfilR :: Handler Html
 getPerfilR = do
