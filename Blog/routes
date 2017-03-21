@@ -1,7 +1,7 @@
 /                                 HomeR           GET
 /posts                            PostsR          GET
 
-/admin/home                       HomeAdminR      GET 
+/admin/                           HomeAdminR      GET 
 /admin/cadastro                   UsuarioR        GET POST
 /admin/login                      LoginR          GET POST
 /admin/logout                     LogoutR             POST
@@ -21,3 +21,5 @@
 /contato                          ContatoR        GET POST
 /admin/contato/lista              ContatoListaR   GET
 /admin/contato/del/#ContatoId     DelContatoR         POST
+
+/admin/usuario/lista              UsuarioListaR   GET

@@ -15,20 +15,78 @@ import Handlers.Widgets
 import Handlers.Forms
 
 -- Blog ----------------------------------------------------------------------------------------------------------------
+
+------- DE FORA
+{-
+productsAndCategories :: GHandler App App [(Categoria)]
+productsAndCategories = runDB $ selectList [] [Asc ProductName] >>= mapM (\(Entity kp p) -> do
+    categoryProducts <- selectList [PostCategoria ==. kp] []
+    return (p, Prelude.map entityVal categoryProducts)) 
+                                         
+--}
+------- DE FORA
+
 pegarCategoriaR :: CategoriaId -> Handler Html
 pegarCategoriaR cid = do
     categoria <- runDB $ get404 cid
+    posts <- runDB $ selectList [ (filterField :: postCategoria) <-. cid] [Asc PostTitulo] 
+    
+    -- >>= mapM (\(Entity kp p) -> do
+    --    categoryProducts <- selectList [PostCategoria ==. kp] []
+   
     defaultLayout $ do
-    toWidget [hamlet|
-        #{categoriaNome categoria}
-    |]
+    
+        setTitle "Codemage | Blog - Categoria"
+        addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
+        addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
+        addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
+        addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
+        
+        -- na função toWidgetHead você manda o que você quiser para o head da página
+        
+        
+        -- Aqui irá o css, sempre para usar o lucius ou cassius tem que chamar a função toWidget
+        toWidget $ css
+        
+        toWidget $ js
+        
+        toWidget $ $(whamletFile (tplString "home/categoria.hamlet") )
+    
+    
 
 getPostsR :: Handler Html
 getPostsR = undefined
 
+
+
+
+-- http://www.yesodweb.com/book/sql-joins
+-- http://www.yesodweb.com/book/sql-joins
+-- http://www.yesodweb.com/book/sql-joins
+-- http://www.yesodweb.com/book/sql-joins
+
 getHomeR :: Handler Html
 getHomeR = do
     categorias <- runDB $ selectList [] [Asc CategoriaNome]
+    posts <- runDB $ selectList [] [Asc PostTitulo]
+    
+    $(logDebug) $ pack $ show posts
+    
+    
+    -- records <- runDB $ do
+    --     -- sessions <- selectList [] []
+    --     -- players  <- selectList [] []
+    --     -- tables   <- selectList [] []
+        
+    --     -- return $ joinTables3 gamingSessionPlayer gamingSessionTable sessions players tables
+        
+    --     categorias  <- selectList [] [Asc CategoriaNome]
+    --     posts       <- selectList [] [Asc PostTitulo]
+        
+    --     return $ joinCategoria2 postsCategoria categorias posts
+    
+     
+    
     defaultLayout $ do
     
         setTitle "Codemage | Blog"
@@ -38,116 +96,14 @@ getHomeR = do
         addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
         
         -- na função toWidgetHead você manda o que você quiser para o head da página
-        toWidget [julius|
-    
-            function ola(){
-                alert("ola mundo");
-            }
-            
-        |]
+        
         
         -- Aqui irá o css, sempre para usar o lucius ou cassius tem que chamar a função toWidget
         toWidget $ css
         
-        -- toWidget [lucius|
-            
-        --     h1{
-        --         color: #ffffff;
-        --         text-shadow: 2px 2px #0a0a0a;
-        --         font-family: monospace;
-        --         font-size: 6em;
-        --     }
-            
-        --     .row{
-        --         max-width: 80rem !important;
-        --     }
-            
-        --     .top-menu{
-        --         padding-top: 0.5em;
-        --         background-color: rgb(19, 19, 19);
-        --         position: fixed;
-        --         max-width: 80rem;
-        --         margin-left: auto;
-        --         margin-right: auto;
-        --         border-bottom: 5px solid #62aaff;
-        --     }
-            
-        --     .a-active{
-        --         text-decoration: underline;
-        --         transition: 0.3s;
-        --     }
-            
-        --     .a-top-menu{
-        --         color: #ffffff !important;
-        --         font-size: 1.8em;
-        --         font-family: monospace;
-        --     }
-            
-        --     .a-top-menu:hover{
-        --         transition: 1s;
-        --         text-decoration: underline;
-        --     }
-            
-        --     .a-top-menu:focus{
-        --         background-color: rgba(46, 49, 53, 0.78);
-        --         transition: 0.3s;            
-        --     }
-            
-        --     .header{
-        --         margin-top: 3.7em;
-        --         background-color: #62aaff;
-        --         text-align: center;
-        --         padding: 2em;
-        --     }
-            
-        --     .conteudo{
-        --         border-top: 5px solid #e0e0e0;
-        --         background-color: #fbfbfb;
-        --         min-height: 10em;
-        --         padding: 1em;
-        --     }
-            
-        --     .conteudo-direito{
-        --         border-left: 1px dotted #cacaca;
-        --         min-height: 30em;
-        --     }
-            
-        --     .footer{
-        --         background-color: #ececec;
-        --         min-height: 5em;
-        --         padding: 1em;
-        --     }
-            
-        --     hr{
-        --         border-bottom: 1px dotted #cacaca;
-        --     }
-        -- |]
+        toWidget $ js
         
-        -- Whanlet significa que você vai escrever o html aqui, a estrutura básica do html ja está feita, 
-        -- Isso será renderizado dentro do body
-        [whamlet|
-        
-            ^{menuHome}    
-            ^{headerHome}
-            
-            <div .row .conteudo>
-                <div .medium-9 .columns>
-                    <h3> Ultimos
-                        <small> Post's
-                    <hr>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit at magna non pellentesque. Maecenas at orci at eros maximus semper dapibus eu nisl. Donec dui felis, scelerisque ut mauris quis, vestibulum bibendum neque. Duis consectetur semper lacus id pharetra. Fusce efficitur, ex sed convallis congue, neque massa ultrices neque, vel iaculis felis enim vel nisi. Nam vel justo lectus. Etiam placerat scelerisque sapien ac consequat. Integer sollicitudin nunc ut augue fringilla, vel congue risus posuere. Vivamus lacus nisl, blandit eu blandit et, mattis eget massa. Mauris in sapien orci. Nulla ut scelerisque massa. Nam volutpat euismod lorem, id lobortis tellus pretium vel. Cras porta, ante ut cursus laoreet, metus lacus hendrerit nibh, eu laoreet diam metus ac justo. Morbi volutpat, quam et rutrum eleifend, mauris justo ullamcorper turpis, sed dictum lorem enim a erat. Integer velit magna, maximus quis porttitor id, sollicitudin id felis. Pellentesque gravida, lectus at porta commodo, leo tellus sagittis dolor, sagittis lobortis massa metus ac arcu.
-    
-                <div .medium-3 .columns .conteudo-direito>
-                    <h3> ua
-                    <ul>
-                        $forall Entity alid categoria <- categorias
-                            <li>
-                                <i>
-                                    <a href=@{CategoriaIdR alid}> #{categoriaNome    categoria} 
-                    
-            ^{footerHome}
-    
-        |]
+        toWidget $ $(whamletFile (tplString "home/home.hamlet") )
     
     
 getPostIdR :: PostId -> Handler Html
@@ -171,135 +127,42 @@ getPostIdR postId = do
         addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
         
         
-        -- na função toWidgetHead você manda o que você quiser para o head da página
-        toWidget [julius|
-    
-            function ola(){
-                alert("ola mundo");
-            }
-            
-        |]
+        toWidget $ css
+        toWidget $ js
+        toWidget $ $(whamletFile (tplString "home/post.hamlet") )
         
-        -- Aqui irá o css, sempre para usar o lucius ou cassius tem que chamar a função toWidget
-        toWidget [lucius|
-            
-            h1{
-                color: #ffffff;
-                text-shadow: 2px 2px #0a0a0a;
-                font-family: monospace;
-                font-size: 6em;
-            }
-            
-            .row{
-                max-width: 80rem !important;
-            }
-            
-            .top-menu{
-                padding-top: 0.5em;
-                background-color: rgb(19, 19, 19);
-                position: fixed;
-                max-width: 80rem;
-                margin-left: auto;
-                margin-right: auto;
-                border-bottom: 5px solid #62aaff;
-            }
-            
-            .a-active{
-                text-decoration: underline;
-                transition: 0.3s;
-            }
-            
-            .a-top-menu{
-                color: #ffffff !important;
-                font-size: 1.8em;
-                font-family: monospace;
-            }
-            
-            .a-top-menu:hover{
-                transition: 1s;
-                text-decoration: underline;
-            }
-            
-            .a-top-menu:focus{
-                background-color: rgba(46, 49, 53, 0.78);
-                transition: 0.3s;            
-            }
-            
-            .header{
-                margin-top: 3.7em;
-                background-color: #62aaff;
-                text-align: center;
-                padding: 2em;
-            }
-            
-            .conteudo{
-                border-top: 5px solid #e0e0e0;
-                background-color: #fbfbfb;
-                min-height: 10em;
-                padding: 1em;
-            }
-            
-            .conteudo-direito{
-                border-left: 1px dotted #cacaca;
-                min-height: 30em;
-            }
-            
-            .footer{
-                background-color: #ececec;
-                min-height: 5em;
-                padding: 1em;
-            }
-            
-            hr{
-                border-bottom: 1px dotted #cacaca;
-            }
-        |]
         
-        -- Whanlet significa que você vai escrever o html aqui, a estrutura básica do html ja está feita, 
-        -- Isso será renderizado dentro do body
-        [whamlet|
-        
-            ^{menuHome}    
-            ^{headerHome}
-            
-            <div .row .conteudo>
-                <div .medium-9 .columns>
-                    <h3> Post
-                        <small> #{postTitulo post}
-                    <hr>
-                    <p>#{postDescricao post}
-    
-                <div .medium-3 .columns .conteudo-direito>
-                    <h3> #{categoriaNome categoria}
-                        <small> 
-                    <ul>
-                        $forall Entity alid post <- posts
-                            <li>
-                                <i>
-                                    <a href=@{PostIdR alid}> #{postTitulo    post} 
-                                
-                
-                        <li>
-                            <i> 
-                                <a href=@{PostsR}> Post 123/123/2006
-                        <li>
-                            <i> 
-                                <a href=@{PostsR}> Post 123/123/2006                    
-                        <li>
-                            <i> 
-                                <a href=@{PostsR}> Post 123/123/2006
-                        <li>
-                            <i> 
-                                <a href=@{PostsR}> Post 123/123/2006
-            ^{footerHome}
-    
-        |]   
 -- Categoria -----------------------------------------------------------------------------------------------------------
+getCategoriaIdR :: CategoriaId -> Handler Html
+getCategoriaIdR cid = do
+
+    --post  <- runDB $ get404 postId
+    categoria <- runDB $ get404 cid
+    
+    -- let catId =
+    --     optionsPairs $ fmap (\ent -> entityKey ent) categoria
+    
+    posts <- runDB $ selectList [] [Asc PostTitulo]
+    
+    --animal <- runDB $ get404 alid 
+    --especies <- runDB $ get404 (animalEspecieid animal)
+    
+    defaultLayout $ do
+        setTitle "Codemage | Blog " 
+        addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
+        addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
+        addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
+        addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
+        
+
+        toWidget $ css
+        toWidget $ js
+        toWidget $ $(whamletFile (tplString "home/categoria.hamlet") )
+
 
 
 
 -- Contatos ------------------------------------------------------------------------------------------------------------
-
 getContatoR :: Handler Html
 getContatoR = do
             (widget, enctype) <- generateFormPost formContato
@@ -312,98 +175,10 @@ getContatoR = do
             addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"            
             
             -- Aqui irá o css, sempre para usar o lucius ou cassius tem que chamar a função toWidget
-            toWidget [lucius|
-                
-                h1{
-                    color: #ffffff;
-                    text-shadow: 2px 2px #0a0a0a;
-                    font-family: monospace;
-                    font-size: 6em;
-                }
-                
-                .row{
-                    max-width: 80rem !important;
-                }
-                
-                .top-menu{
-                    padding-top: 0.5em;
-                    background-color: rgb(19, 19, 19);
-                    position: fixed;
-                    max-width: 80rem;
-                    margin-left: auto;
-                    margin-right: auto;
-                    border-bottom: 5px solid #62aaff;
-                }
-                
-                .a-active{
-                    text-decoration: underline;
-                    transition: 0.3s;
-                }
-                
-                .a-top-menu{
-                    color: #ffffff !important;
-                    font-size: 1.8em;
-                    font-family: monospace;
-                }
-                
-                .a-top-menu:hover{
-                    transition: 1s;
-                    text-decoration: underline;
-                }
-                
-                .a-top-menu:focus{
-                    background-color: rgba(46, 49, 53, 0.78);
-                    transition: 0.3s;            
-                }
-                
-                .header{
-                    margin-top: 3.7em;
-                    background-color: #62aaff;
-                    text-align: center;
-                    padding: 2em;
-                }
-                
-                .conteudo{
-                    border-top: 5px solid #e0e0e0;
-                    background-color: #fbfbfb;
-                    min-height: 10em;
-                    padding: 1em;
-                }
-                
-                .conteudo-direito{
-                    border-left: 1px dotted #cacaca;
-                    min-height: 30em;
-                }
-                
-                .footer{
-                    background-color: #ececec;
-                    min-height: 5em;
-                    padding: 1em;
-                }
-                
-                hr{
-                    border-bottom: 1px dotted #cacaca;
-                }
-            |]         
-            [whamlet|
             
-                ^{menuHome}    
-                ^{headerHome}
-                
-                <div .row .conteudo>
-                    <div .small-9 .small-centered .columns>
-                        <h3> Contato
-                        <p>
-                            * Através do formulário você pode enviar mensagens e sugestões de conteúdo
-                        <hr>
-                    
-                        <form method=post action=@{ContatoR} enctype=#{enctype}>
-                            ^{widget}
-                            <input type="submit" .button .float-right value="Enviar">
-                     
-                ^{footerHome}
-            
-            |]
+            toWidget $ css
+            toWidget $ js
+            toWidget $ $(whamletFile (tplString "home/contato.hamlet") )
 
 
 postContatoR :: Handler Html
@@ -415,192 +190,28 @@ postContatoR = do
                     alid <- runDB $ insert contato
                     defaultLayout $ do 
             
-                    setTitle "Codemage | Blog"
+                    setTitle "Codemage | Blog Contato Sucesso"
                     addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
                     addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
                     addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
                     addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"            
-    
-                    -- Aqui irá o css, sempre para usar o lucius ou cassius tem que chamar a função toWidget
-                    toWidget [lucius|
-                        
-                        h1{
-                            color: #ffffff;
-                            text-shadow: 2px 2px #0a0a0a;
-                            font-family: monospace;
-                            font-size: 6em;
-                        }
-                        
-                        .row{
-                            max-width: 80rem !important;
-                        }
-                        
-                        .top-menu{
-                            padding-top: 0.5em;
-                            background-color: rgb(19, 19, 19);
-                            position: fixed;
-                            max-width: 80rem;
-                            margin-left: auto;
-                            margin-right: auto;
-                            border-bottom: 5px solid #62aaff;
-                        }
-                        
-                        .a-active{
-                            text-decoration: underline;
-                            transition: 0.3s;
-                        }
-                        
-                        .a-top-menu{
-                            color: #ffffff !important;
-                            font-size: 1.8em;
-                            font-family: monospace;
-                        }
-                        
-                        .a-top-menu:hover{
-                            transition: 1s;
-                            text-decoration: underline;
-                        }
-                        
-                        .a-top-menu:focus{
-                            background-color: rgba(46, 49, 53, 0.78);
-                            transition: 0.3s;            
-                        }
-                        
-                        .header{
-                            margin-top: 3.7em;
-                            background-color: #62aaff;
-                            text-align: center;
-                            padding: 2em;
-                        }
-                        
-                        .conteudo{
-                            border-top: 5px solid #e0e0e0;
-                            background-color: #fbfbfb;
-                            min-height: 10em;
-                            padding: 1em;
-                        }
-                        
-                        .conteudo-direito{
-                            border-left: 1px dotted #cacaca;
-                            min-height: 30em;
-                        }
-                        
-                        .footer{
-                            background-color: #ececec;
-                            min-height: 5em;
-                            padding: 1em;
-                        }
-                        
-                        hr{
-                            border-bottom: 1px dotted #cacaca;
-                        }
-                    |]
-    
-                    [whamlet|
-                
-                        ^{menuHome}    
-                        ^{headerHome}
-                        <div .row .conteudo>
-                            <div .small-9 .small-centered .columns>
-                                <p .callout .success >
-                                    Mensagem enviada com sucesso !
-                        ^{footerHome}
-                        
-                    |]
+                    
+                    
+                    toWidget $ css
+                    toWidget $ js
+                    toWidget $ $(whamletFile (tplString "home/contato.sucesso.hamlet") )
+                    
                     
                 _ -> defaultLayout $ do 
             
-                    setTitle "Codemage | Blog"
+                    setTitle "Codemage | Blog Contato Erro"
                     addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
                     addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
                     addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
                     addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"            
     
                     -- Aqui irá o css, sempre para usar o lucius ou cassius tem que chamar a função toWidget
-                    toWidget [lucius|
-                        
-                        h1{
-                            color: #ffffff;
-                            text-shadow: 2px 2px #0a0a0a;
-                            font-family: monospace;
-                            font-size: 6em;
-                        }
-                        
-                        .row{
-                            max-width: 80rem !important;
-                        }
-                        
-                        .top-menu{
-                            padding-top: 0.5em;
-                            background-color: rgb(19, 19, 19);
-                            position: fixed;
-                            max-width: 80rem;
-                            margin-left: auto;
-                            margin-right: auto;
-                            border-bottom: 5px solid #62aaff;
-                        }
-                        
-                        .a-active{
-                            text-decoration: underline;
-                            transition: 0.3s;
-                        }
-                        
-                        .a-top-menu{
-                            color: #ffffff !important;
-                            font-size: 1.8em;
-                            font-family: monospace;
-                        }
-                        
-                        .a-top-menu:hover{
-                            transition: 1s;
-                            text-decoration: underline;
-                        }
-                        
-                        .a-top-menu:focus{
-                            background-color: rgba(46, 49, 53, 0.78);
-                            transition: 0.3s;            
-                        }
-                        
-                        .header{
-                            margin-top: 3.7em;
-                            background-color: #62aaff;
-                            text-align: center;
-                            padding: 2em;
-                        }
-                        
-                        .conteudo{
-                            border-top: 5px solid #e0e0e0;
-                            background-color: #fbfbfb;
-                            min-height: 10em;
-                            padding: 1em;
-                        }
-                        
-                        .conteudo-direito{
-                            border-left: 1px dotted #cacaca;
-                            min-height: 30em;
-                        }
-                        
-                        .footer{
-                            background-color: #ececec;
-                            min-height: 5em;
-                            padding: 1em;
-                        }
-                        
-                        hr{
-                            border-bottom: 1px dotted #cacaca;
-                        }
-                    |]
-    
-                    [whamlet|
-                
-                        ^{menuHome}    
-                        ^{headerHome}
-                        <div .row .conteudo>
-                            <div .small-9 .small-centered .columns>
-                                <p .callout .alert >
-                                    Ocorreu um erro ao enviar a mensagem !
-                        ^{footerHome}
-                        
-                    |]
-               
-                
+                    toWidget $ css
+                    toWidget $ js
+                    toWidget $ $(whamletFile (tplString "home/contato.erro.hamlet") )
+                    

@@ -1,0 +1,21 @@
+ ^{menuHome}    
+^{headerHome}
+
+<div .row .conteudo>
+    <div .medium-9 .columns>
+        <h3> Post
+            <small> #{postTitulo post}
+        <hr>
+        <p>#{postDescricao post}
+
+    <div .medium-3 .columns .conteudo-direito>
+        <h3> #{categoriaNome categoria}
+            <small> 
+        <ul>
+            $forall Entity alid post <- posts
+                <li>
+                    <i>
+                        <a href=@{PostIdR alid}> #{postTitulo    post} 
+                    
+    
+^{footerHome}

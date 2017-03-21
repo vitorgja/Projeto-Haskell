@@ -8,7 +8,7 @@ import Yesod.Core
 
 import Yesod
 import Data.Text
-import Control.Applicative
+-- import Control.Applicative
 import Database.Persist.Postgresql
 
 import Handlers.Widgets
@@ -18,9 +18,17 @@ import Handlers.Forms
 
 getHomeAdminR :: Handler Html
 getHomeAdminR = do
+    
+    
     sess <- lookupSession "_ID"
     
     defaultLayout $ do
+        setTitle "Codemage | Blog - Admin"
+        addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
+        addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
+        addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
+        addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
+
         toWidget [lucius|
             ul li {
                 display: inline;
@@ -31,23 +39,28 @@ getHomeAdminR = do
                 background: #c5c4c5;
             }
         |]
+        
+         -- Aqui irá o css, sempre para usar o lucius ou cassius tem que chamar a função toWidget
+        toWidget $ css
+        -- Aqui irá o js, sempre para usar o Julious tem que chamar a função toWidget
+        toWidget $ js
+        
         toWidget [whamlet|
-            <h1> Meu primeiro site em Haskell!
-            <ul>
-                <li> <a href=@{CategoriaR}>Cadastro de Categoria
-                <li> <a href=@{CategoriaListaR}>Listagem de Categoria
-                <li> <a href=@{PostR}>Cadastro de Post
-                <li> <a href=@{PostListaR}>Listagem de Post
-                <li> <a href=@{ContatoR}>Contato
-                $maybe _ <- sess
-                    <li> 
-                        <form action=@{LogoutR} method=post>
-                            <input type="submit" value="Logout">
-                $nothing
-                    <li> <a href=@{LoginR}>Login
-                    
-            
+        
+            <div .admin>
+                
+                ^{showAdminMenuLink sess}
+                ^{headerAdminHome}
+                
+                <div .row .conteudo>
+                
+                    <button .button type="button" data-toggle="example-dropdown">Toggle Dropdown
+                    <div .dropdown-pane id="example-dropdown" data-dropdown>Just some junk that needs to be said. Or not. Your choice.
+
+                ^{footerHome}
         |]
+        
+        
        
        
         
@@ -57,11 +70,35 @@ getHomeAdminR = do
 getLoginR :: Handler Html
 getLoginR = do
     (widget,enctype)<- generateFormPost formUserLogin
+    -- sess <- lookupSession "_ID"
     defaultLayout $ do
-        [whamlet|
-            <form action=@{LoginR} method=post enctype=#{enctype}>
-                ^{widget}
-                <input type="submit" value="Logar">
+        setTitle "Login - Codemage | Blog"
+        addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
+        addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
+        addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
+        addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
+    
+        -- Aqui irá o css, sempre para usar o lucius ou cassius tem que chamar a função toWidget
+        toWidget $ css
+        -- Aqui irá o js, sempre para usar o Julious tem que chamar a função toWidget
+        toWidget $ js
+    
+        toWidget [whamlet|
+            ^{showMenuLink}
+            ^{headerHome}
+            
+            <div .row .conteudo>
+                <div .medium-8 .medium-offset-2 .columns>
+                    <h3> Admin
+                        <small> Login
+                    <hr>
+            
+                    <form action=@{LoginR} method=post enctype=#{enctype}>
+                        ^{widget}
+                        <input type="submit" value="Logar">
+                        
+                        
+            ^{footerHome}
         |]
 -- Rota de autenticação
 postLoginR :: Handler Html
@@ -127,12 +164,23 @@ postLogoutR = do
 getCategoriaR :: Handler Html
 getCategoriaR = do
     (widget,enctype)<- generateFormPost formCategoria
+    sess <- lookupSession "_ID"
+    
     defaultLayout $ do
-        [whamlet|
-            <form action=@{CategoriaR} method=post enctype=#{enctype}>
-                ^{widget}
-                <input type="submit" value="Logar">
-        |]
+        
+        setTitle "Codemage | Blog - Admin"
+        addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
+        addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
+        addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
+        addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
+    
+        -- Aqui irá o css, sempre para usar o lucius ou cassius tem que chamar a função toWidget
+        toWidget $ css
+        -- Aqui irá o js, sempre para usar o Julious tem que chamar a função toWidget
+        toWidget $ js
+        
+        toWidget $ $(whamletFile "templates/admin/categoria/categoriaadd.hamlet")
+
         
 postCategoriaR :: Handler Html
 postCategoriaR = do
@@ -141,71 +189,91 @@ postCategoriaR = do
                 FormSuccess post -> do
                     uid <- runDB $ insert post
                     defaultLayout [whamlet|
-                        Post cadastrado com sucesso!
+                        Post cadastrado com sucesso! #{show $ uid}
                     |]
                 _ -> redirect HomeR
                     
 -- SELECT * FROM aluno ORDER BY nome
 getCategoriaListaR :: Handler Html
 getCategoriaListaR = do
+    sess <- lookupSession "_ID"
     categorias <- runDB $ selectList [] [Asc CategoriaNome]
     defaultLayout $ do 
     
-    [whamlet|
-    
-        <table>
-        <tr> 
-            <td> id  
-            <td> Nome 
-           
-            
-        $forall Entity alid categoria <- categorias
-            <tr>
-                <form action=@{DelCategoriaR alid} method=post> 
-                    <td> #{fromSqlKey  alid} </td>  
-                    <td> #{categoriaNome categoria} </td> 
-                    <td> <input type="submit"> </td>
+        setTitle "Admin | Blog"
+        addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
+        addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
+        addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
+        addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
         
-    |]
+        -- Aqui irá o css, sempre para usar o lucius ou cassius tem que chamar a função toWidget
+        toWidget $ css
+        -- Aqui irá o js, sempre para usar o Julious tem que chamar a função toWidget
+        toWidget $ js
+    
+        toWidget $ $(whamletFile "templates/admin/categoria/categorialista.hamlet")
 
 
 postDelCategoriaR :: CategoriaId -> Handler Html
 postDelCategoriaR alid = do 
-                                runDB $ delete alid
-                                redirect CategoriaListaR
+    runDB $ delete alid
+    redirect CategoriaListaR
                                 
 -- POST --------------------------------------------------------------------------------------------------
 getPostR :: Handler Html
 getPostR = do
+            sess <- lookupSession "_ID"
             (widget,enctype)<- generateFormPost formPost
             defaultLayout $ do
-                [whamlet|
-                    <form action=@{PostR} method=post enctype=#{enctype}>
-                        ^{widget}
-                        <input type="submit" value="Logar">
-                |]
+                setTitle "Admin | Blog"
+                addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
+                addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
+                addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
+                addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
+                
+                -- Aqui irá o css, sempre para usar o lucius ou cassius tem que chamar a função toWidget
+                toWidget $ css
+                -- Aqui irá o js, sempre para usar o Julious tem que chamar a função toWidget
+                toWidget $ js
+            
+                toWidget $ $(whamletFile "templates/admin/post/postadd.hamlet")
+               
                 
 postPostR :: Handler Html
 postPostR = do
-                    ((resultado,_),_)<- runFormPost formPost
-                    case resultado of
-                        FormSuccess post -> do
-                            uid <- runDB $ insert post
-                            defaultLayout [whamlet|
-                            Post cadastrado com sucesso! #{postTitulo post}
-                            |]
-                        _ -> redirect HomeR
+            ((resultado,_),_)<- runFormPost formPost
+            case resultado of
+                FormSuccess post -> do
+                    uid <- runDB $ insert post
+                    defaultLayout [whamlet|
+                    Post cadastrado com sucesso! #{postTitulo post}
+                    |]
+                _ -> redirect HomeR
                             
 postDelPostR :: PostId -> Handler Html
 postDelPostR alid = do 
-                                runDB $ delete alid
-                                redirect PostListaR
+    runDB $ delete alid
+    redirect PostListaR
                                 
 -- SELECT * FROM post ORDER BY nome
 getPostListaR :: Handler Html
 getPostListaR = do
+    sess <- lookupSession "_ID"
     posts <- runDB $ selectList [] [Asc PostTitulo]
-    defaultLayout $(whamletFile "templates/admin/post/posttable.hamlet")
+    defaultLayout $ do
+        
+        setTitle "Admin | Blog"
+        addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
+        addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
+        addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
+        addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
+        
+        -- Aqui irá o css, sempre para usar o lucius ou cassius tem que chamar a função toWidget
+        toWidget $ css
+        -- Aqui irá o js, sempre para usar o Julious tem que chamar a função toWidget
+        toWidget $ js
+    
+        toWidget $ $(whamletFile "templates/admin/post/postlista.hamlet")
 
 
 -- Contatos ------------------------------------------------------------------------------------------------------------
@@ -213,40 +281,52 @@ getPostListaR = do
 -- SELECT * FROM aluno ORDER BY nome
 getContatoListaR :: Handler Html
 getContatoListaR = do
+    sess <- lookupSession "_ID"
     contatos <- runDB $ selectList [] [Asc ContatoNome]
+
     defaultLayout $ do 
 
-    setTitle "Admin | Blog"
-    addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
-    addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
-    addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
-    addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
-    
-    [whamlet|
-    
-        <table>
-            <thead>
-                <tr>
-                    <th> id  
-                    <th> Nome 
-                    <th> Email 
-                    <th> Assunto 
-                    <th> Descrição
-                    <th>
-            <tbody> 
+        setTitle "Admin | Blog"
+        addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
+        addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
+        addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
+        addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
         
-            $forall Entity alid contato <- contatos
-                <tr>
-                    <form action=@{DelContatoR alid} method=post> 
-                        <td> #{fromSqlKey  alid}  
-                        <td> #{contatoNome      contato} 
-                        <td> #{contatoEmail     contato} 
-                        <td> #{contatoAssunto   contato}
-                        <td> #{contatoDescricao contato}
-                        <td> <input type="submit" value="excluir">
-    |]
+        -- Aqui irá o css, sempre para usar o lucius ou cassius tem que chamar a função toWidget
+        toWidget $ css
+        -- Aqui irá o js, sempre para usar o Julious tem que chamar a função toWidget
+        toWidget $ js
+        
+        toWidget $ $(whamletFile "templates/admin/contato/contatolista.hamlet")
+    
     
 postDelContatoR :: ContatoId -> Handler Html
 postDelContatoR alid = do 
     runDB $ delete alid
     redirect ContatoListaR
+    
+  
+    
+----------------------------------------------------------------------
+-- USUARIO
+getUsuarioListaR :: Handler Html
+getUsuarioListaR = do
+    sess <- lookupSession "_ID"
+    usuarios <- runDB $ selectList [] [Asc UsuarioNome]
+
+    defaultLayout $ do 
+
+        setTitle "Admin | Blog"
+        addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
+        addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
+        addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
+        addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
+        
+        -- Aqui irá o css, sempre para usar o lucius ou cassius tem que chamar a função toWidget
+        toWidget $ css
+        -- Aqui irá o js, sempre para usar o Julious tem que chamar a função toWidget
+        toWidget $ js
+    
+        toWidget $ $(whamletFile "templates/admin/usuario/usuariolista.hamlet")
+        
+   

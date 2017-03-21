@@ -1,0 +1,16 @@
+<div .admin>
+                
+                ^{showAdminMenuLink sess}
+                ^{headerAdminHome}
+                
+                <div .row .conteudo>
+                    <div .medium-8 .medium-offset-2 .columns>
+                        <h3> Adicionar
+                            <small> Categorias
+                        <hr>
+        
+                        <form action=@{CategoriaR} method=post enctype=#{enctype}>
+                            ^{widget}
+                            <input type="submit" value="Logar">
+                            
+                ^{footerHome}

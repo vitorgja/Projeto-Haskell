@@ -1,0 +1,26 @@
+^{showMenuLink}
+<!-- ^{menuHome} -->    
+^{headerHome}
+
+
+<div .row .conteudo>
+    <div .medium-9 .columns>
+        <h3> Ultimos
+            <small> Post's
+        <hr>
+        
+        $forall (postEntity) <- posts
+            <div>
+                ^{showPostLink $ postEntity}
+        
+
+        
+    <div .medium-3 .columns .conteudo-direito>
+        <h3> Categorias
+        <ul>
+            $forall Entity alid categoria <- categorias
+                <li>
+                    <i>
+                        <a href=@{CategoriaIdR alid}> #{categoriaNome    categoria} 
+        
+^{footerHome}

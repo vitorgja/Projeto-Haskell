@@ -6,10 +6,104 @@ module Handlers.Widgets where
 import Foundation
 import Yesod
 
+template :: String
+template = "default/"
+
+tplString :: String -> String
+tplString path = "templates/"++ template ++ path 
+
+
 -- Home Widgets ----------------------------------------------------------------------------------------------------------
+
+showMenuLink ::  Widget
+showMenuLink = do
+ 
+    categorias <- handlerToWidget $ runDB $ selectList [] [Asc CategoriaNome]
+    
+    toWidget
+        [whamlet|
+        
+            <div .row>
+                <div .medium-12 .columns .menu-centered .top-menu>
+                    <ul .menu>
+                        <li>
+                            <a .a-top-menu href=@{HomeR}>Home
+            
+                        $forall Entity alid categoria <- categorias
+                            <li>
+                                <a .a-top-menu href=@{CategoriaIdR alid}> #{categoriaNome    categoria}
+                        
+                        <li>
+                            <a .a-top-menu href=@{ContatoR}>Contato
+        |]
+        
+--showAdminMenuLink ::  Widget
+showAdminMenuLink sess = do
+ 
+    categorias <- handlerToWidget $ runDB $ selectList [] [Asc CategoriaNome]
+    
+    toWidget
+        [whamlet|
+        
+            <div .row>
+                <div .medium-12 .columns .menu-centered .top-menu>
+
+                    <ul .dropdown .menu data-dropdown-menu="">
+                        <li>
+                            <a .a-top-menu href=@{HomeR}>Home
+                        
+                        <li>
+                            <a .a-top-menu href="#0">Categoria
+                            <ul .menu>
+                                <li>
+                                    <a .a-top-menu href=@{CategoriaR}>Cadastro
+                                <li>
+                                    <a .a-top-menu href=@{CategoriaListaR}>Listagem
+                            
+                        <li>
+                            <a .a-top-menu href="#0">Posts
+                            <ul .menu>
+                                <li>
+                                    <a .a-top-menu href=@{PostR}>Cadastro
+                                <li>
+                                    <a .a-top-menu href=@{PostListaR}>Listagem
+                        <li>
+                            <a .a-top-menu href="#0">Contato
+                            <ul .menu>
+                                <li>
+                                    <a .a-top-menu href=@{ContatoListaR}>Listagem
+                        $maybe _ <- sess
+                            <li> 
+                                <form action=@{LogoutR} method=post>
+                                    <input .a-top-menu type="submit" value="Logout">
+                        $nothing
+                            <li>
+                                <a .a-top-menu href=@{LoginR}>Login
+
+        |]  
+        
+headerAdminHome :: Widget
+headerAdminHome = do
+        toWidget
+            [hamlet|
+
+        <div .row .header>
+            <div .medium-12 .columns>
+                <h1>
+                    <small>Admin
+                    Codemage{Blog} 
+                        <i .fi-laptop>
+                
+              |]
+        
+
+ 
 
 menuHome :: Widget
 menuHome = do
+        categorias <- handlerToWidget $ runDB $ selectList [] [Asc CategoriaNome]
+        
+        
         toWidget
             [hamlet|
 
@@ -52,9 +146,21 @@ footerHome = do
             [hamlet|
 
         <div .row .footer> footer
-            <button onClick="ola()"> Click me!
+            
+            <div .medium-4 .columns>
+                <p>Desenvolvido por:
+                <ul>
+                    <li>Henrique Fernandez
+                    <li>
+                        <a href="http://vitorpereira.com.br">
+                            Vitor Pereira
+            
+            <div .medium-8 .columns>
+                <p>© Copyright - Todos os direitos reservados à 
+                    <a href=@{HomeR}>Codemage{Blog} 
+                        <i .fi-laptop>          
                 
-              |]
+            |]
               
 -- Admin Widgets --------------------------------------------------------------------------------------------------------
 
@@ -91,7 +197,7 @@ headerAdmin = do
 
         <div .row .header>
             <div .medium-12 .columns>
-                <h1> Codemage{Blog} 
+                <h1> Codemage {Blog} 
                     <i .fi-laptop>
                 
               |]
@@ -131,10 +237,22 @@ menuzinho (sess) = do
         |]
 --}
 
+js :: Widget
+js = do
+    toWidget [julius|
+        $(document).foundation();
+    |]
 
 css :: Widget
 css = do
     toWidget [lucius|
+            .admin .top-menu{
+                border-bottom: 5px solid #E67E22;
+            }
+            .admin .header {
+                background-color: #E67E22;
+                padding: 0;
+            }
             
             h1{
                 color: #ffffff;
@@ -162,6 +280,11 @@ css = do
                 transition: 0.3s;
             }
             
+            input.a-top-menu{
+                border: 0;
+                background: none;
+                text-decoration: none;
+            }
             .a-top-menu{
                 color: #ffffff !important;
                 font-size: 1.8em;
@@ -177,6 +300,11 @@ css = do
                 background-color: rgba(46, 49, 53, 0.78);
                 transition: 0.3s;            
             }
+            
+            .submenu li .a-top-menu{
+                color: #000 !important;
+            }
+            
             
             .header{
                 margin-top: 3.7em;
@@ -207,3 +335,21 @@ css = do
                 border-bottom: 1px dotted #cacaca;
             }
         |]
+        
+        
+        
+        
+showPostLink :: Entity Post -> Widget
+showPostLink (Entity postid post) = do
+    usuario <- handlerToWidget $ runDB $ get404 $ postUsuario post
+    categoria <- handlerToWidget $ runDB $ get404 $ postCategoria post
+    [whamlet|
+        
+        <h4>
+            <a href=@{PostIdR postid}> #{postTitulo post}
+                               
+        <p>categoria: #{categoriaNome categoria}
+        <p>por: #{usuarioNome usuario}
+    |]
+    
+    
