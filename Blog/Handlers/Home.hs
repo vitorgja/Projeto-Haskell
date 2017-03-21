@@ -26,10 +26,14 @@ productsAndCategories = runDB $ selectList [] [Asc ProductName] >>= mapM (\(Enti
 --}
 ------- DE FORA
 
+vaiGoku (Entity uid _) = uid
+
+
 pegarCategoriaR :: CategoriaId -> Handler Html
 pegarCategoriaR cid = do
     categoria <- runDB $ get404 cid
-    posts <- runDB $ selectList [ (filterField :: postCategoria) <-. cid] [Asc PostTitulo] 
+    
+    posts <- runDB $ selectList [ (PostCategoria ==. cid )] [Asc PostTitulo] 
     
     -- >>= mapM (\(Entity kp p) -> do
     --    categoryProducts <- selectList [PostCategoria ==. kp] []
@@ -50,7 +54,9 @@ pegarCategoriaR cid = do
         
         toWidget $ js
         
-        toWidget $ $(whamletFile (tplString "home/categoria.hamlet") )
+        -- toWidget $ [hamlet|          #{show categoria}       |]
+        
+        -- toWidget $ $(whamletFile (tplString "home/categoria.hamlet") )
     
     
 
@@ -136,16 +142,17 @@ getPostIdR postId = do
 getCategoriaIdR :: CategoriaId -> Handler Html
 getCategoriaIdR cid = do
 
-    --post  <- runDB $ get404 postId
+    -- Current Category
     categoria <- runDB $ get404 cid
+    
+    -- All Category
+    categorias <- runDB $ selectList [] [Asc CategoriaNome]
     
     -- let catId =
     --     optionsPairs $ fmap (\ent -> entityKey ent) categoria
     
-    posts <- runDB $ selectList [] [Asc PostTitulo]
-    
-    --animal <- runDB $ get404 alid 
-    --especies <- runDB $ get404 (animalEspecieid animal)
+    posts <- runDB $ selectList [ (PostCategoria ==. cid )] [Asc PostTitulo] 
+    -- posts <- runDB $ selectList [] [Asc PostTitulo]
     
     defaultLayout $ do
         setTitle "Codemage | Blog " 
@@ -154,12 +161,9 @@ getCategoriaIdR cid = do
         addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
         addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
         
-
         toWidget $ css
         toWidget $ js
         toWidget $ $(whamletFile (tplString "home/categoria.hamlet") )
-
-
 
 
 -- Contatos ------------------------------------------------------------------------------------------------------------
