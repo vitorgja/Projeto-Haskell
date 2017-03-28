@@ -14,6 +14,9 @@ import Database.Persist.Postgresql
 import Handlers.Widgets
 import Handlers.Forms
 
+
+--import Data.Text.filter
+
 -- Blog ----------------------------------------------------------------------------------------------------------------
 
 ------- DE FORA
@@ -139,6 +142,58 @@ getPostIdR postId = do
         
         
 -- Categoria -----------------------------------------------------------------------------------------------------------
+-- slugField :: (RenderMessage master FormMessage) => Field sub master Slug
+-- slugField = Field
+--             { fieldParse = \rawVals -> case rawVals of
+--                                   [s] 
+--                                       | isEmpty s -> return $ Left "Empty slug forbidden"
+--                                       | otherwise -> return $ Right $ Just $ Slug s
+--                                   _ -> return $ Left "A value must be provided"
+--             , fieldView = \idAttr nameAttr attrs eResult isReq ->
+--                           (fieldView textField) idAttr nameAttr attrs (eResult >>= return . unSlug) isReq
+--             }
+
+
+-- SLUG 3
+getPostBySlug :: String -> Handler [PostData]
+getPostBySlug slug = do
+    allPosts <- selectPosts 0
+    return $ Prelude.filter ((== slug) . postDataSlug) allPosts
+-- SLUG 3
+
+getCategoriaNomeR :: String -> Handler Html
+getCategoriaNomeR slug = do
+
+    posts <- getPostBySlug slug
+    defaultLayout $ 
+        toWidget [hamlet|
+            #{show posts}
+        |]
+
+    -- -- Current Category
+    -- categoria <- runDB $ getBy404 $ UniqueSlug slug
+    
+    -- -- All Category
+    -- categorias <- runDB $ selectList [] [Asc CategoriaNome]
+    
+    -- -- let catId =
+    -- --     optionsPairs $ fmap (\ent -> entityKey ent) categoria
+    
+    -- posts <- runDB $ selectList [ (PostCategoria ==. cid )] [Asc PostTitulo] 
+    -- -- posts <- runDB $ selectList [] [Asc PostTitulo]
+    
+    -- defaultLayout $ do
+    --     setTitle "Codemage | Blog " 
+    --     addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
+    --     addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
+    --     addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
+    --     addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
+        
+    --     toWidget $ css
+    --     toWidget $ js
+    --     toWidget $ $(whamletFile (tplString "home/categoria.hamlet") )
+
+
 getCategoriaIdR :: CategoriaId -> Handler Html
 getCategoriaIdR cid = do
 

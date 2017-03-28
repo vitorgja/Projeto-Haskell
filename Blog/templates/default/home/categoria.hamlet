@@ -5,8 +5,12 @@
 
 <div .row .conteudo>
     <div .medium-9 .columns>
-        <h3> #{categoriaNome categoria} Ultimos
-            <small> Post's
+    
+        <h3>
+            <span class="label info" style="font-size: 1.7rem;border-bottom: 5px solid #e0e0e0;">
+                #{categoriaNome categoria} 
+            Ultimos
+                <small> Post's
             
         <hr>
         

@@ -145,20 +145,17 @@ footerHome = do
         toWidget
             [hamlet|
 
-        <div .row .footer> footer
+        <div .row .footer>
             
-            <div .medium-4 .columns>
-                <p>Desenvolvido por:
-                <ul>
-                    <li>Henrique Fernandez
-                    <li>
-                        <a href="http://vitorpereira.com.br">
-                            Vitor Pereira
-            
-            <div .medium-8 .columns>
-                <p>© Copyright - Todos os direitos reservados à 
+            <div .medium-12 .columns>
+                <p .text-center>© Copyright - Todos os direitos reservados à 
                     <a href=@{HomeR}>Codemage{Blog} 
-                        <i .fi-laptop>          
+                        <i .fi-laptop>
+                <h6 .text-center>
+                    Henrique Fernandez
+                <h6 .text-center>
+                    <a href="http://vitorpereira.com.br">
+                        Vitor Pereira
                 
             |]
               
@@ -259,6 +256,9 @@ css = do
                 text-shadow: 2px 2px #0a0a0a;
                 font-family: monospace;
                 font-size: 6em;
+            }
+            footer h6:nth-child(2) {
+                margin-bottom: 0;
             }
             
             .row{

@@ -14,6 +14,10 @@ import Database.Persist.Postgresql
 import Handlers.Widgets
 import Handlers.Forms
 
+
+
+import Data.List
+
 -- Index ---------------------------------------------------------------------------------------------------------------
 
 getHomeAdminR :: Handler Html
@@ -130,7 +134,7 @@ postUsuarioR = do
                     ((resultado,_),_)<- runFormPost formUser
                     case resultado of
                         FormSuccess user -> do
-                            uid <- runDB $ insert user
+                            uid <- runDB $ Database.Persist.Postgresql.insert user
                             defaultLayout [whamlet|
                             Usuárix cadastrado com e-mail #{usuarioEmail user}
                             |]
@@ -179,7 +183,7 @@ getCategoriaR = do
         -- Aqui irá o js, sempre para usar o Julious tem que chamar a função toWidget
         toWidget $ js
         
-        toWidget $ $(whamletFile "templates/admin/categoria/categoriaadd.hamlet")
+        toWidget $ $(whamletFile (tplString "admin/categoria/categoriaadd.hamlet") )
 
         
 postCategoriaR :: Handler Html
@@ -187,7 +191,7 @@ postCategoriaR = do
             ((resultado,_),_) <- runFormPost formCategoria
             case resultado of
                 FormSuccess post -> do
-                    uid <- runDB $ insert post
+                    uid <- runDB $ Database.Persist.Postgresql.insert post
                     defaultLayout [whamlet|
                         Post cadastrado com sucesso! #{show $ uid}
                     |]
@@ -211,12 +215,12 @@ getCategoriaListaR = do
         -- Aqui irá o js, sempre para usar o Julious tem que chamar a função toWidget
         toWidget $ js
     
-        toWidget $ $(whamletFile "templates/admin/categoria/categorialista.hamlet")
+        toWidget $ $(whamletFile (tplString "admin/categoria/categorialista.hamlet") )
 
 
 postDelCategoriaR :: CategoriaId -> Handler Html
 postDelCategoriaR alid = do 
-    runDB $ delete alid
+    runDB $ Database.Persist.Postgresql.delete alid
     redirect CategoriaListaR
                                 
 -- POST --------------------------------------------------------------------------------------------------
@@ -236,7 +240,7 @@ getPostR = do
                 -- Aqui irá o js, sempre para usar o Julious tem que chamar a função toWidget
                 toWidget $ js
             
-                toWidget $ $(whamletFile "templates/admin/post/postadd.hamlet")
+                toWidget $ $(whamletFile (tplString "admin/post/postadd.hamlet") )
                
                 
 postPostR :: Handler Html
@@ -244,7 +248,7 @@ postPostR = do
             ((resultado,_),_)<- runFormPost formPost
             case resultado of
                 FormSuccess post -> do
-                    uid <- runDB $ insert post
+                    uid <- runDB $ Database.Persist.Postgresql.insert post
                     defaultLayout [whamlet|
                     Post cadastrado com sucesso! #{postTitulo post}
                     |]
@@ -252,7 +256,7 @@ postPostR = do
                             
 postDelPostR :: PostId -> Handler Html
 postDelPostR alid = do 
-    runDB $ delete alid
+    runDB $ Database.Persist.Postgresql.delete alid
     redirect PostListaR
                                 
 -- SELECT * FROM post ORDER BY nome
@@ -273,7 +277,7 @@ getPostListaR = do
         -- Aqui irá o js, sempre para usar o Julious tem que chamar a função toWidget
         toWidget $ js
     
-        toWidget $ $(whamletFile "templates/admin/post/postlista.hamlet")
+        toWidget $ $(whamletFile (tplString "admin/post/postlista.hamlet") )
 
 
 -- Contatos ------------------------------------------------------------------------------------------------------------
@@ -297,12 +301,12 @@ getContatoListaR = do
         -- Aqui irá o js, sempre para usar o Julious tem que chamar a função toWidget
         toWidget $ js
         
-        toWidget $ $(whamletFile "templates/admin/contato/contatolista.hamlet")
+        toWidget $ $(whamletFile (tplString "admin/contato/contatolista.hamlet") )
     
     
 postDelContatoR :: ContatoId -> Handler Html
 postDelContatoR alid = do 
-    runDB $ delete alid
+    runDB $ Database.Persist.Postgresql.delete alid
     redirect ContatoListaR
     
   
@@ -327,6 +331,6 @@ getUsuarioListaR = do
         -- Aqui irá o js, sempre para usar o Julious tem que chamar a função toWidget
         toWidget $ js
     
-        toWidget $ $(whamletFile "templates/admin/usuario/usuariolista.hamlet")
+        toWidget $ $(whamletFile (tplString "admin/usuario/usuariolista.hamlet") )
         
    

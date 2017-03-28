@@ -30,11 +30,12 @@ formCategoria = renderDivs $ Categoria <$>
     areq textField "Nome" Nothing 
 
 formPost :: Form Post
-formPost = renderDivs $ Post <$>
-    areq textField "Nome" Nothing <*>
-    areq textareaField "Idade" Nothing <*>
-    areq (selectField usuarios) "Usuarios" Nothing <*>
-    areq (selectField dptos) "Categoria" Nothing
+formPost = renderDivs $ Post 
+    <$> areq textField "Slug" Nothing
+    <*> areq textField "Nome" Nothing 
+    <*> areq textareaField "Idade" Nothing
+    <*> areq (selectField usuarios) "Usuarios" Nothing
+    <*> areq (selectField dptos) "Categoria" Nothing
 
 dptos = do
     entidades <- runDB $ selectList [] [Asc CategoriaNome] 

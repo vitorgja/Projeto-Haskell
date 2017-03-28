@@ -6,10 +6,31 @@ module Foundation where
 
 import Yesod
 import Data.Text
+import Database.Persist
 import Database.Persist.Postgresql
+
+
+-- import Database.Persist.Sql
     ( ConnectionPool, SqlBackend, runSqlPool)
+    
 
 data App = App {connPool :: ConnectionPool }
+
+-- Using a new type for Slug. Simply a wrapper around a text value.
+-- newtype Slug = Slug {unSlug :: Text}
+--        deriving (Show, Read, Eq, PathPiece, PersistField)
+
+-- Slug
+-- http://stackoverflow.com/questions/21347242/creating-a-url-alias-or-making-deep-urls-pretty
+-- http://stackoverflow.com/questions/21347242/creating-a-url-alias-or-making-deep-urls-pretty
+-- http://stackoverflow.com/questions/21347242/creating-a-url-alias-or-making-deep-urls-pretty
+-- http://stackoverflow.com/questions/21347242/creating-a-url-alias-or-making-deep-urls-pretty
+
+
+
+
+-- https://github.com/yesodweb/yesod/wiki/Slugs
+-- share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persist|
 
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
 Usuario
@@ -20,7 +41,8 @@ Usuario
 Categoria
     nome  Text
     deriving Show
-Post 
+Post
+    slug Text
     titulo Text
     descricao Textarea
     usuario UsuarioId
@@ -34,6 +56,18 @@ Contato
     deriving Show
 
 |]
+
+
+data PostData = PostData
+    {   slug        :: String
+       ,titulo      :: Text
+       ,descricao   :: Textarea
+       ,usuario     :: UsuarioId
+       ,categoria   :: CategoriaId
+    }
+
+
+
 
 mkYesodData "App" $(parseRoutesFile "routes")
 

@@ -8,6 +8,9 @@
 /admin/perfil                     PerfilR         GET
 
 /categoria/#CategoriaId           CategoriaIdR    GET
+/categoria/n/#String              CategoriaNomeR    GET
+
+
 /admin/categoria                  CategoriaR      GET POST
 /admin/categoria/lista            CategoriaListaR GET
 /admin/categoria/del/#CategoriaId DelCategoriaR       POST
