@@ -1,0 +1,7 @@
+^{menuHome}    
+^{headerHome}
+<div .row .conteudo>
+    <div .small-9 .small-centered .columns>
+        <p .callout .success >
+            Mensagem enviada com sucesso !
+^{footerHome}

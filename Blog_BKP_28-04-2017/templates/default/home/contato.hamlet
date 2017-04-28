@@ -1,0 +1,15 @@
+^{menuHome}    
+^{headerHome}
+
+<div .row .conteudo>
+    <div .small-9 .small-centered .columns>
+        <h3> Contato
+        <p>
+            * Através do formulário você pode enviar mensagens e sugestões de conteúdo
+        <hr>
+    
+        <form method=post action=@{ContatoR} enctype=#{enctype}>
+            ^{widget}
+            <input type="submit" .button .float-right value="Enviar">
+     
+^{footerHome}

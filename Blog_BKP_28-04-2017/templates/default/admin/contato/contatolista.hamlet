@@ -1,0 +1,32 @@
+ <div .admin>
+                
+    ^{showAdminMenuLink sess}
+    ^{headerAdminHome}
+    
+    <div .row .conteudo>
+        <div .medium-8 .medium-offset-2 .columns>
+            <h3> Adicionar
+                <small> Categorias
+            <hr>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th> id  
+                        <th> Nome 
+                        <th> Email 
+                        <th> Assunto 
+                        <th> Descrição
+                        <th>
+                <tbody> 
+            
+                $forall Entity alid contato <- contatos
+                    <tr>
+                        <form action=@{DelContatoR alid} method=post> 
+                            <td> #{fromSqlKey  alid}  
+                            <td> #{contatoNome      contato} 
+                            <td> #{contatoEmail     contato} 
+                            <td> #{contatoAssunto   contato}
+                            <td> #{contatoDescricao contato}
+                            <td> <input type="submit" value="excluir">
+    ^{footerHome}

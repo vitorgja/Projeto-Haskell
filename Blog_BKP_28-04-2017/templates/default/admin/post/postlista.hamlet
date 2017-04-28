@@ -1,0 +1,27 @@
+ <div .admin>
+                
+    ^{showAdminMenuLink sess}
+    ^{headerAdminHome}
+    
+    <div .row .conteudo>
+        <div .medium-8 .medium-offset-2 .columns>
+            <h3> Adicionar
+                <small> Categorias
+            <hr>
+            
+            <table>
+                <tr> 
+                    <td> id  
+                    <td> titulo 
+                    <td> descricao 
+                    <td> Apagar 
+                    
+                $forall Entity alid post <- posts
+                    <tr>
+                        <form action=@{DelPostR alid} method=post> 
+                            <td> #{fromSqlKey  alid}  
+                            <td> #{postTitulo    post} 
+                            <td> #{postDescricao post} 
+                            
+                            <td> <input type="submit" value="Apagar">
+    ^{footerHome}
