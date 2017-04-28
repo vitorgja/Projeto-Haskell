@@ -13,7 +13,7 @@ import Handlers.Usuario
 import Handlers.Contato
 import Site
 
-import Handlers.Widgets
+import Helper.Widgets
 
 
 

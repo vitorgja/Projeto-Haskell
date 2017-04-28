@@ -6,7 +6,8 @@ extra-source-files: routes
 
 executable          blog
   main-is:          Main.hs
-  other-modules:    Application
+  other-modules:    Settings
+                    Application
                     Foundation
                     Handlers.Post
                     Handlers.Categoria
@@ -14,7 +15,7 @@ executable          blog
                     Handlers.Contato
                     
                     Helper.Functions
-                    Handlers.Widgets
+                    Helper.Widgets
                     Site
 
   ghc-options:      -Wall -fwarn-tabs -O2

@@ -1,3 +1,4 @@
+/static							  StaticR Static getStatic
 /                                 HomeR           GET
 /posts                            PostsR          GET
 

@@ -5,6 +5,7 @@
 module Foundation where
 
 import Yesod
+import Yesod.Static
 import Data.Text
 import Database.Persist
 import Database.Persist.Postgresql
@@ -15,10 +16,10 @@ import Database.Persist.Postgresql
     
 
 import Helper.Functions
+import Settings
 
 
-
-data App = App {connPool :: ConnectionPool }
+data App = App {getStatic :: Static, connPool :: ConnectionPool }
 
 -- Using a new type for Slug. Simply a wrapper around a text value.
 -- newtype Slug = Slug {unSlug :: Text}
@@ -71,7 +72,7 @@ data PostData = PostData
     }
 
 
-
+staticFiles staticDir
 
 mkYesodData "App" $(parseRoutesFile "routes")
 

@@ -11,7 +11,7 @@ import Data.Text
 import Control.Applicative
 import Database.Persist.Postgresql
 
-import Handlers.Widgets
+import Helper.Widgets
 
 
 formContato :: Form Contato

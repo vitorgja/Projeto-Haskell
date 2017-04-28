@@ -9,7 +9,7 @@ import Data.Text
 import Control.Applicative
 import Database.Persist.Postgresql
 
-import Handlers.Widgets
+import Helper.Widgets
 
 
 
@@ -64,6 +64,7 @@ getHomeR = do
         addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
         addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
         
+        addScript $ StaticR css_Home_css
         -- na função toWidgetHead você manda o que você quiser para o head da página
         
         
