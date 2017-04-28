@@ -6,9 +6,15 @@ module Application where
 
 import Foundation
 import Yesod
-import Handlers.Admin
-import Handlers.Home
+
+import Handlers.Post
+import Handlers.Categoria
+import Handlers.Usuario
+import Handlers.Contato
+import Site
+
 import Handlers.Widgets
-import Handlers.Forms
+
+
 
 mkYesodDispatch "App" resourcesApp

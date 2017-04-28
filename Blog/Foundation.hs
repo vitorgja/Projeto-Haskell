@@ -14,6 +14,10 @@ import Database.Persist.Postgresql
     ( ConnectionPool, SqlBackend, runSqlPool)
     
 
+import Helper.Functions
+
+
+
 data App = App {connPool :: ConnectionPool }
 
 -- Using a new type for Slug. Simply a wrapper around a text value.
@@ -98,4 +102,8 @@ instance RenderMessage App FormMessage where
        
        
        
+
+
+
+
 

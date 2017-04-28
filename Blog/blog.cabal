@@ -8,10 +8,14 @@ executable          blog
   main-is:          Main.hs
   other-modules:    Application
                     Foundation
-                    Handlers.Admin
-                    Handlers.Forms
-                    Handlers.Home
+                    Handlers.Post
+                    Handlers.Categoria
+                    Handlers.Usuario
+                    Handlers.Contato
+                    
+                    Helper.Functions
                     Handlers.Widgets
+                    Site
 
   ghc-options:      -Wall -fwarn-tabs -O2
 
