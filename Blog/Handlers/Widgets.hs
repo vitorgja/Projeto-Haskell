@@ -241,7 +241,7 @@ menuzinho (sess) = do
 js :: Widget
 js = do
     toWidget [julius|
-        $(document).foundation();
+        // $(document).foundation();
     |]
 
 css :: Widget

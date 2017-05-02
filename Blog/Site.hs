@@ -64,14 +64,16 @@ getHomeR = do
         addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
         addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
         
-        addScript $ StaticR css_Home_css
+        -- addStylesheet $ StaticR css_style_admin_css
+        addStylesheet $ StaticR css_style_css
+        addScript     $ StaticR js_script_js
         -- na função toWidgetHead você manda o que você quiser para o head da página
         
         
         -- Aqui irá o css, sempre para usar o lucius ou cassius tem que chamar a função toWidget
-        toWidget $ css
+        -- toWidget $ css
         
-        toWidget $ js
+        -- toWidget $ js
         
         toWidget $ $(whamletFile (tplString "home/home.hamlet") )
     
@@ -107,6 +109,10 @@ getHomeAdminR = do
         addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
         addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
 
+         -- addStylesheet $ StaticR css_style_admin_css
+        addStylesheet $ StaticR css_style_css
+        addScript     $ StaticR js_script_js
+
         toWidget [lucius|
             ul li {
                 display: inline;
@@ -119,9 +125,9 @@ getHomeAdminR = do
         |]
         
          -- Aqui irá o css, sempre para usar o lucius ou cassius tem que chamar a função toWidget
-        toWidget $ css
+        -- toWidget $ css
         -- Aqui irá o js, sempre para usar o Julious tem que chamar a função toWidget
-        toWidget $ js
+        -- toWidget $ js
         
         toWidget [whamlet|
         

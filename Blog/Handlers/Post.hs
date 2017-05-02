@@ -63,9 +63,12 @@ getPostIdR postId = do
         addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
         addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
         
+        addStylesheet $ StaticR css_style_admin_css
+        -- addStylesheet $ StaticR css_style_css
+        addScript     $ StaticR js_script_js
         
-        toWidget $ css
-        toWidget $ js
+        -- toWidget $ css
+        -- toWidget $ js
         toWidget $ $(whamletFile (tplString "home/post.hamlet") )
 
 
