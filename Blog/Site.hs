@@ -59,6 +59,9 @@ getHomeR = do
     defaultLayout $ do
     
         setTitle "Codemage | Blog"
+        
+        toWidget $ head
+        {-
         addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
         addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
         addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
@@ -74,6 +77,7 @@ getHomeR = do
         -- toWidget $ css
         
         -- toWidget $ js
+        -}
         
         toWidget $ $(whamletFile (tplString "home/home.hamlet") )
     
@@ -104,14 +108,17 @@ getHomeAdminR = do
     
     defaultLayout $ do
         setTitle "Codemage | Blog - Admin"
-        addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
-        addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
-        addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
-        addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
 
-         -- addStylesheet $ StaticR css_style_admin_css
-        addStylesheet $ StaticR css_style_css
-        addScript     $ StaticR js_script_js
+        toWidget $ headAdmin
+
+        -- addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
+        -- addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
+        -- addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
+        -- addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
+
+        -- -- addStylesheet $ StaticR css_style_admin_css
+        -- addStylesheet $ StaticR css_style_css
+        -- addScript     $ StaticR js_script_js
 
         toWidget [lucius|
             ul li {

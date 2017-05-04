@@ -3,6 +3,7 @@
             }
             .admin .header {
                 background-color: #E67E22;
+
                 padding: 0;
             }
             
@@ -64,6 +65,7 @@
             .header{
                 margin-top: 3.7em;
                 background-color: #62aaff;
+                background-color: blue;
                 text-align: center;
                 padding: 2em;
             }

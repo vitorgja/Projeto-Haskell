@@ -357,3 +357,31 @@ showPostLink (Entity postid post) = do
     |]
     
     
+
+
+
+
+
+
+
+head :: Widget
+head = do
+    addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
+    addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
+    addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
+    addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
+    
+        -- addStylesheet $ StaticR css_style_admin_css
+    addStylesheet  $ StaticR $ css_style_css
+    addScript      $ StaticR $ js_script_js
+
+headAdmin :: Widget
+headAdmin = do
+    addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
+    addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
+    addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
+    addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
+    
+    addStylesheet  $ StaticR $ css_style_admin_css
+        -- addStylesheet $ StaticR css_style_css
+    addScript      $ StaticR $ js_script_js

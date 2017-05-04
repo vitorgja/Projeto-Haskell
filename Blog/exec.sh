@@ -71,7 +71,7 @@ Menu(){
 	echo "| 4. Executar           |"
 	echo "| 0. Sair               |"
 	echo "|+---------------------+|"
-	echo ""
+	echo
 	echo -n "Escolha uma Opc: "
 }
 Clean(){
