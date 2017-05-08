@@ -48,19 +48,8 @@ getLoginR = do
     -- sess <- lookupSession "_ID"
     defaultLayout $ do
         setTitle "Login - Codemage | Blog"
-        addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
-        addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
-        addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
-        addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
-    
-        -- addStylesheet $ StaticR css_style_admin_css
-        addStylesheet $ StaticR css_style_css
-        addScript     $ StaticR js_script_js
-
-        -- Aqui irá o css, sempre para usar o lucius ou cassius tem que chamar a função toWidget
-        -- toWidget $ css
-        -- Aqui irá o js, sempre para usar o Julious tem que chamar a função toWidget
-        -- toWidget $ js
+        toWidget $ headSite
+        
     
         toWidget [whamlet|
             ^{showMenuLink}
@@ -111,7 +100,7 @@ postUsuarioR = do
                         FormSuccess user -> do
                             uid <- runDB $ Database.Persist.Postgresql.insert user
                             defaultLayout [whamlet|
-                            Usuárix cadastrado com e-mail #{usuarioEmail user}
+                            Usuário cadastrado com e-mail #{usuarioEmail user}
                             |]
                         _ -> redirect HomeR
 
@@ -158,19 +147,7 @@ getUsuarioListaR = do
     defaultLayout $ do 
 
         setTitle "Admin | Blog"
-        addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
-        addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
-        addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
-        addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
-        
-        addStylesheet $ StaticR css_style_admin_css
-        -- addStylesheet $ StaticR css_style_css
-        addScript     $ StaticR js_script_js
-
-        -- Aqui irá o css, sempre para usar o lucius ou cassius tem que chamar a função toWidget
-        -- toWidget $ css
-        -- Aqui irá o js, sempre para usar o Julious tem que chamar a função toWidget
-        -- toWidget $ js
+        toWidget $ headAdmin
     
         toWidget $ $(whamletFile (tplString "admin/usuario/usuariolista.hamlet") )
         

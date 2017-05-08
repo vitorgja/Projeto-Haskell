@@ -57,22 +57,9 @@ pegarCategoriaR cid = do
     defaultLayout $ do
     
         setTitle "Codemage | Blog - Categoria"
-        addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
-        addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
-        addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
-        addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
 
-         -- addStylesheet $ StaticR css_style_admin_css
-        addStylesheet $ StaticR css_style_css
-        addScript     $ StaticR js_script_js
+        toWidget $ headSite
         
-        -- na função toWidgetHead você manda o que você quiser para o head da página
-        
-        
-        -- Aqui irá o css, sempre para usar o lucius ou cassius tem que chamar a função toWidget
-        toWidget $ css
-        
-        toWidget $ js
         
         -- toWidget $ [hamlet|          #{show categoria}       |]
         
@@ -154,17 +141,8 @@ getCategoriaIdR cid = do
     
     defaultLayout $ do
         setTitle "Codemage | Blog " 
-        addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
-        addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
-        addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
-        addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
-        
-         -- addStylesheet $ StaticR css_style_admin_css
-        addStylesheet $ StaticR css_style_css
-        addScript     $ StaticR js_script_js
-
-        -- toWidget $ css
-        -- toWidget $ js
+        toWidget $ headSite
+       
         toWidget $ $(whamletFile (tplString "home/categoria.hamlet") )
 
 
@@ -190,20 +168,8 @@ getCategoriaR = do
     defaultLayout $ do
         
         setTitle "Codemage | Blog - Admin"
-        addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
-        addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
-        addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
-        addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
-    
-        addStylesheet $ StaticR css_style_admin_css
-        -- addStylesheet $ StaticR css_style_css
-        addScript     $ StaticR js_script_js
-
-        -- Aqui irá o css, sempre para usar o lucius ou cassius tem que chamar a função toWidget
-        -- toWidget $ css
-        -- Aqui irá o js, sempre para usar o Julious tem que chamar a função toWidget
-        -- toWidget $ js
-        
+        toWidget $ headAdmin
+      
         toWidget $ $(whamletFile (tplString "admin/categoria/categoriaadd.hamlet") )
 
         
@@ -215,14 +181,8 @@ postCategoriaR = do
                     uid <- runDB $ Database.Persist.Postgresql.insert post
                     defaultLayout $ do 
                         setTitle "Codemage | Blog - Admin"
-                        addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
-                        addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
-                        addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
-                        addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
-
-                        addStylesheet $ StaticR css_style_admin_css
-                        -- addStylesheet $ StaticR css_style_css
-                        addScript     $ StaticR js_script_js
+                        toWidget $ headAdmin
+        
                         toWidget [whamlet|
                             <h1>Post cadastrado com sucesso! #{show $ uid}
                         |]
@@ -236,20 +196,8 @@ getCategoriaListaR = do
     defaultLayout $ do 
     
         setTitle "Admin | Blog"
-        addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
-        addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
-        addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
-        addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
+        toWidget $ headAdmin
         
-        addStylesheet $ StaticR css_style_admin_css
-        -- addStylesheet $ StaticR css_style_css
-        addScript     $ StaticR js_script_js
-
-        -- Aqui irá o css, sempre para usar o lucius ou cassius tem que chamar a função toWidget
-        -- toWidget $ css
-        -- Aqui irá o js, sempre para usar o Julious tem que chamar a função toWidget
-        -- toWidget $ js
-    
         toWidget $ $(whamletFile (tplString "admin/categoria/categorialista.hamlet") )
 
 
