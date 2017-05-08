@@ -364,8 +364,8 @@ showPostLink (Entity postid post) = do
 
 
 
-head :: Widget
-head = do
+headSite :: Widget
+headSite = do
     addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
     addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
     addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"

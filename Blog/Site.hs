@@ -14,11 +14,11 @@ import Helper.Widgets
 
 
 {-
-  h   h    ooo  m   m   eeeee
+  h   h    ooo    m   m   eeeee
   h   h   o   o   mm mm   e
   hhhhh   o   o   m m m   eeeee
   h   h   o   o   m   m   e
-  h   h    ooo  m   m   eeeee
+  h   h    ooo    m   m   eeeee
 -}        
 
 
@@ -41,44 +41,11 @@ getHomeR = do
     
     $(logDebug) $ pack $ show posts
     
-    
-    -- records <- runDB $ do
-    --     -- sessions <- selectList [] []
-    --     -- players  <- selectList [] []
-    --     -- tables   <- selectList [] []
-        
-    --     -- return $ joinTables3 gamingSessionPlayer gamingSessionTable sessions players tables
-        
-    --     categorias  <- selectList [] [Asc CategoriaNome]
-    --     posts       <- selectList [] [Asc PostTitulo]
-        
-    --     return $ joinCategoria2 postsCategoria categorias posts
-    
-     
-    
     defaultLayout $ do
     
-        setTitle "Codemage | Blog"
+        setTitle "Codemage | Blog - Home Page"
         
-        toWidget $ head
-        {-
-        addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
-        addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
-        addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
-        addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
-        
-        -- addStylesheet $ StaticR css_style_admin_css
-        addStylesheet $ StaticR css_style_css
-        addScript     $ StaticR js_script_js
-        -- na função toWidgetHead você manda o que você quiser para o head da página
-        
-        
-        -- Aqui irá o css, sempre para usar o lucius ou cassius tem que chamar a função toWidget
-        -- toWidget $ css
-        
-        -- toWidget $ js
-        -}
-        
+        toWidget $ headSite
         toWidget $ $(whamletFile (tplString "home/home.hamlet") )
     
     
@@ -91,11 +58,11 @@ getHomeR = do
 
 
 {-
-   aaa  dddd  m   m   i   n   n
+   aaa    dddd    m   m   i   n   n
   a   a   d   d   mm mm   i   nn  n
   aaaaa   d   d   m m m   i   n n n
   a   a   d   d   m   m   i   n  nn
-  a   a   dddd  m   m   i   n   n
+  a   a   dddd    m   m   i   n   n
 -}  
 
 
@@ -110,36 +77,17 @@ getHomeAdminR = do
         setTitle "Codemage | Blog - Admin"
 
         toWidget $ headAdmin
-
-        -- addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
-        -- addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
-        -- addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
-        -- addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
-
-        -- -- addStylesheet $ StaticR css_style_admin_css
-        -- addStylesheet $ StaticR css_style_css
-        -- addScript     $ StaticR js_script_js
-
+        -- CSS
         toWidget [lucius|
-            ul li {
-                display: inline;
-            }
-            a {
-                color: blue;
-                padding: 10px 20px
-                background: #c5c4c5;
+            ul li { display: inline; }
+            a { color: blue; padding: 10px 20px background: #c5c4c5;
             }
         |]
         
-         -- Aqui irá o css, sempre para usar o lucius ou cassius tem que chamar a função toWidget
-        -- toWidget $ css
-        -- Aqui irá o js, sempre para usar o Julious tem que chamar a função toWidget
-        -- toWidget $ js
         
+        -- HTML
         toWidget [whamlet|
-        
             <div .admin>
-                
                 ^{showAdminMenuLink sess}
                 ^{headerAdminHome}
                 

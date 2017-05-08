@@ -48,29 +48,17 @@ getPostIdR postId = do
     post  <- runDB $ get404 postId
     categoria <- runDB $ get404 (postCategoria post)
     
-    -- let catId =
-    --     optionsPairs $ fmap (\ent -> entityKey ent) categoria
+   
     
     posts <- runDB $ selectList [] [Asc PostTitulo]
     
-    --animal <- runDB $ get404 alid 
-    --especies <- runDB $ get404 (animalEspecieid animal)
+    
     
     defaultLayout $ do
-        setTitle "Codemage | Blog " 
-        addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
-        addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
-        addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
-        addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
-        
-        addStylesheet $ StaticR css_style_admin_css
-        -- addStylesheet $ StaticR css_style_css
-        addScript     $ StaticR js_script_js
-        
-        -- toWidget $ css
-        -- toWidget $ js
+        setTitle $ "Codemage | Blog - POST"
+        toWidget $ headSite 
+        -- toWidget $ [hamlet| #{show $ postTitulo post}|]
         toWidget $ $(whamletFile (tplString "home/post.hamlet") )
-
 
 
 
@@ -91,17 +79,8 @@ getPostR = do
             sess <- lookupSession "_ID"
             (widget,enctype)<- generateFormPost formPost
             defaultLayout $ do
-                setTitle "Admin | Blog"
-                addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
-                addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
-                addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
-                addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
-                
-                -- Aqui irá o css, sempre para usar o lucius ou cassius tem que chamar a função toWidget
-                toWidget $ css
-                -- Aqui irá o js, sempre para usar o Julious tem que chamar a função toWidget
-                toWidget $ js
-            
+                setTitle "Admin | Blog - Post"
+                toWidget $ headAdmin
                 toWidget $ $(whamletFile (tplString "admin/post/postadd.hamlet") )
                
                 
@@ -111,9 +90,11 @@ postPostR = do
             case resultado of
                 FormSuccess post -> do
                     uid <- runDB $ Database.Persist.Postgresql.insert post
-                    defaultLayout [whamlet|
-                    Post cadastrado com sucesso! #{postTitulo post}
-                    |]
+                    defaultLayout $ do
+                    	setTitle "Admin | Blog - Post Cadastrado"
+                    	toWidget $ headAdmin
+                    	toWidget $ $(whamletFile (tplString "admin/post/post.add.sucesso.hamlet") )
+	                    
                 _ -> redirect HomeR
                             
 postDelPostR :: PostId -> Handler Html
@@ -128,16 +109,7 @@ getPostListaR = do
     posts <- runDB $ selectList [] [Asc PostTitulo]
     defaultLayout $ do
         
-        setTitle "Admin | Blog"
-        addStylesheetRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css"
-        addStylesheetRemote "https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css"
-        addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"
-        addScriptRemote "https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"
-        
-        -- Aqui irá o css, sempre para usar o lucius ou cassius tem que chamar a função toWidget
-        toWidget $ css
-        -- Aqui irá o js, sempre para usar o Julious tem que chamar a função toWidget
-        toWidget $ js
-    
+        setTitle "Admin | Blog - Lista"
+        toWidget $ headAdmin
         toWidget $ $(whamletFile (tplString "admin/post/postlista.hamlet") )
 
